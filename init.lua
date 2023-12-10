@@ -81,5 +81,15 @@ return {
     --     ["~/%.config/foo/.*"] = "fooscript",
     --   },
     -- }
+    -- set up custom autocmds to disable null-ls formatting sources for specific filetypes
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = { "c", "cpp", "cuda", "proto" },
+      callback = function()
+        require("null-ls").disable {
+          name = "clang_format",
+          method = require("null-ls").methods.FORMATTING,
+        }
+      end,
+    })
   end,
 }
